@@ -3,16 +3,17 @@
 
 //Pixel access is not implemented in the player
 //so here is how to do it yourself
+
 //it should be implemented along with an "isFrameNew" but that isn't working yet
 
 //--------------------------------------------------------------
 void pixelsApp::setup()
 {
-	ofSetLogLevel(OF_LOG_ERROR);
+	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofSetLogLevel("ofThread", OF_LOG_ERROR);
 	
 	doDrawInfo	= true;
-	
+		
 	consoleListener.setup(this);
 	
 	omxCameraSettings.width = 320;
@@ -48,22 +49,10 @@ void pixelsApp::setup()
 	maxB = -512;
 	minB = 512;
 	
-	GPIOset = false;
-
-	serial.listDevices();
-	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 	
-	int arduino = 0;
-	for (int i = 0; i < deviceList.size(); i++){
-		cout << "found serial device : " << ofToString(i) << " : " << deviceList[i].getDevicePath() << endl;  
-		if(ofIsStringInString(deviceList[i].getDevicePath(),"ttyACM")){
-			arduino = i;
-		}
-	}
-	cout << "arduino should be : " << deviceList[arduino].getDevicePath() << endl;
-	int baud = 9600;
- 	serial.setup(deviceList[arduino].getDevicePath(), baud); //linux example
-	
+	gpio32  = new GPIO("32");
+	gpio32->export_gpio();
+        gpio32->setdir_gpio("out");
 }	
 
 //--------------------------------------------------------------
@@ -79,19 +68,10 @@ void pixelsApp::update()
 	if ( now > lastCover + coverDuration ){
 		if(doReloadPixels && ofGetFrameNum() > 20)
 		{
-			if(!GPIOset){
-				gpio32  = new GPIO("32");
-				gpio32->export_gpio();
-    				gpio32->setdir_gpio("out");
-				GPIOset = true;
-			}
-			if( closeInteraction && GPIOset){
+			if( closeInteraction ){
 				closeInteraction = false;
 				//videoGrabber.setLEDState(true);
 				gpio32 ->setval_gpio("1");
-				cout << "alright, enough of this. sending serialignal to turn the shit off" << endl;
-		       		serial.writeByte((char)107);
-		       		serial.writeByte((char)100);
 			}
 			int _maxB = -512;
 			int _minB = 512;
@@ -138,16 +118,9 @@ void pixelsApp::update()
 			//videoTexture.loadData(virdeoGrabber.getPixels(), omxCameraSettings.width, omxCameraSettings.height, GL_RGBA);
 		}
 	} else {
-		if(!closeInteraction) {
-			closeInteraction = true;
-			//videoGrabber.setLEDState(false);
-			if(GPIOset){
-	    			gpio32 ->setval_gpio("0");
-			}
-			cout << "yeah, that's what i'm talking about. turning the shit on with a serialignal of course." << endl;
-       			serial.writeByte((char)107);
-       			serial.writeByte((char)101);
-		}
+		closeInteraction = true;
+		//videoGrabber.setLEDState(false);
+	        gpio32 ->setval_gpio("0");
 	}
 
 }
@@ -181,7 +154,11 @@ void pixelsApp::draw(){
 	//info <<	filterCollection.filterList << "\n";
 	
 	info << "\n";
-	info << "office of hard work says: everything should be fine" << "\n";
+	info << "Press e to Increment filter" << "\n";
+	info << "Press p to Toggle pixel processing" << "\n";
+	info << "Press r to Toggle pixel reloading" << "\n";
+	info << "Press g to Toggle info" << "\n";
+	
 	
 	if (doDrawInfo) 
 	{
@@ -284,7 +261,7 @@ void pixelsApp::logCover()
 	ofxJSONElement log;
 	string time = ofGetTimestampString();
 	log["timeStamp"] = time;
-        if (!log.save( "logs/" + time + "_log.json", true))
+        if (!log.save( time + "_log.json", true))
         {
             ofLogNotice("pixelsApp::logCover") << "log.json written unsuccessfully.";
         }
@@ -295,13 +272,13 @@ void pixelsApp::logCover()
 	
 	coverCounter++;
 	
-         if (!result.save( "settings.json", true))
-         {
-             ofLogNotice("pixelsApp::logCover") << "settings.json written unsuccessfully.";
-         }
-         else
-         {
-             ofLogNotice("pixelsApp::logCover") << "settings.json written successfully.";
-         }
+        if (!result.save( "settings.json", true))
+        {
+            ofLogNotice("pixelsApp::logCover") << "settings.json written unsuccessfully.";
+        }
+        else
+        {
+            ofLogNotice("pixelsApp::logCover") << "settings.json written successfully.";
+        }
 }
 

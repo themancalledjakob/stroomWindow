@@ -26,27 +26,25 @@ class pixelsApp : public ofBaseApp, public KeyListener{
 	
 	ImageFilterCollection filterCollection;
 	
-	bool 		doDrawInfo;
-	ofTexture 	videoTexture;
+	bool doDrawInfo;
+	ofTexture videoTexture;
 	OMXCameraSettings omxCameraSettings;
-	bool 		doPixels;
-	bool 		doReloadPixels;
-	bool 		covered;
+	bool doPixels;
+	bool doReloadPixels;
+	bool covered;
 	unsigned long long lastCover;
-	int 		coverDuration;
-	long 		coverCounter;
-	bool 		closeInteraction;
-	int 		thresholdAverage;
-	int 		thresholdDiversity;
-	ofxJSONElement 	result;
-	long 		globalDiversity;
-	int 		globalAverage;
-	int 		maxB;
-	int 		minB;
+	int coverDuration;
+	long coverCounter;
+	bool closeInteraction;
+	int thresholdAverage;
+	int thresholdDiversity;
+	ofxJSONElement result;
+	long globalDiversity;
+	int globalAverage;
+	int maxB;
+	int minB;
 	
-	ofSerial	serial;
-
-	bool		GPIOset;
-	GPIO*		gpio32;
+	
+	GPIO* gpio32;
 };
 

@@ -1,6 +1,6 @@
 {
    "coverCounter" : 0,
-   "coverDuration" : 60000,
+   "coverDuration" : 10000,
    "thresholdAverage" : 90,
    "thresholdDiversity" : 10
 }

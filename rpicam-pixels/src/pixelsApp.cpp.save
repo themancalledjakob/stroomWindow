@@ -8,7 +8,7 @@
 //--------------------------------------------------------------
 void pixelsApp::setup()
 {
-	ofSetLogLevel(OF_LOG_ERROR);
+	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofSetLogLevel("ofThread", OF_LOG_ERROR);
 	
 	doDrawInfo	= true;
@@ -51,18 +51,17 @@ void pixelsApp::setup()
 	GPIOset = false;
 
 	serial.listDevices();
-	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
-	
+	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();	
+
 	int arduino = 0;
 	for (int i = 0; i < deviceList.size(); i++){
-		cout << "found serial device : " << ofToString(i) << " : " << deviceList[i].getDevicePath() << endl;  
-		if(ofIsStringInString(deviceList[i].getDevicePath(),"ttyACM")){
+		if(ofIsStringInString(deviceList[i].getDevicePath(),"/dev/ttyACM")){
 			arduino = i;
 		}
 	}
-	cout << "arduino should be : " << deviceList[arduino].getDevicePath() << endl;
+
 	int baud = 9600;
- 	serial.setup(deviceList[arduino].getDevicePath(), baud); //linux example
+ 	serial.setup(, baud); //linux example
 	
 }	
 
@@ -85,11 +84,11 @@ void pixelsApp::update()
     				gpio32->setdir_gpio("out");
 				GPIOset = true;
 			}
-			if( closeInteraction && GPIOset){
+			if( closeInteraction ){
 				closeInteraction = false;
 				//videoGrabber.setLEDState(true);
 				gpio32 ->setval_gpio("1");
-				cout << "alright, enough of this. sending serialignal to turn the shit off" << endl;
+
 		       		serial.writeByte((char)107);
 		       		serial.writeByte((char)100);
 			}
@@ -138,16 +137,14 @@ void pixelsApp::update()
 			//videoTexture.loadData(virdeoGrabber.getPixels(), omxCameraSettings.width, omxCameraSettings.height, GL_RGBA);
 		}
 	} else {
-		if(!closeInteraction) {
-			closeInteraction = true;
-			//videoGrabber.setLEDState(false);
-			if(GPIOset){
-	    			gpio32 ->setval_gpio("0");
-			}
-			cout << "yeah, that's what i'm talking about. turning the shit on with a serialignal of course." << endl;
-       			serial.writeByte((char)107);
-       			serial.writeByte((char)101);
+		closeInteraction = true;
+		//videoGrabber.setLEDState(false);
+		if(GPIOset){
+	    		gpio32 ->setval_gpio("0");
 		}
+
+       		serial.writeByte((char)107);
+       		serial.writeByte((char)101);
 	}
 
 }
@@ -295,13 +292,13 @@ void pixelsApp::logCover()
 	
 	coverCounter++;
 	
-         if (!result.save( "settings.json", true))
-         {
-             ofLogNotice("pixelsApp::logCover") << "settings.json written unsuccessfully.";
-         }
-         else
-         {
-             ofLogNotice("pixelsApp::logCover") << "settings.json written successfully.";
-         }
+        // if (!result.save( "settings.json", true))
+        // {
+        //     ofLogNotice("pixelsApp::logCover") << "settings.json written unsuccessfully.";
+        // }
+        // else
+        // {
+        //     ofLogNotice("pixelsApp::logCover") << "settings.json written successfully.";
+        // }
 }
 
