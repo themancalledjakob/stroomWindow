@@ -404,7 +404,8 @@ obj/linuxarmv7l/Release/src/main.o: src/main.cpp \
  ../../../addons/ofxJSON/libs/jsoncpp/include/json/json.h \
  ../../../addons/ofxJSON/src/ofxJSONElement.h \
  ../../../addons/ofxGPIO/src/ofxGPIO.h ../../../addons/ofxGPIO/src/gpio.h \
- ../../../addons/ofxGPIO/src/i2cBus.h ../../../addons/ofxGPIO/src/spi.h
+ ../../../addons/ofxGPIO/src/i2cBus.h ../../../addons/ofxGPIO/src/spi.h \
+ ../../../libs/openFrameworks/app/ofAppNoWindow.h
 
 ../../../libs/openFrameworks/ofMain.h:
 
@@ -1279,3 +1280,5 @@ src/pixelsApp.h:
 ../../../addons/ofxGPIO/src/i2cBus.h:
 
 ../../../addons/ofxGPIO/src/spi.h:
+
+../../../libs/openFrameworks/app/ofAppNoWindow.h:

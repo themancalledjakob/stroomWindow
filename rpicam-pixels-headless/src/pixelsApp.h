@@ -13,6 +13,7 @@ class pixelsApp : public ofBaseApp, public KeyListener{
 	public:
 		void setup();
 		void update();
+		void draw();
 		void keyPressed(int key);
 
 	void onCharacterReceived(KeyListenerEventData& e);
@@ -43,6 +44,5 @@ class pixelsApp : public ofBaseApp, public KeyListener{
 	int minB;
 	
 	GPIO* gpio32;
-	GPIO* gpio5;
 };
 
