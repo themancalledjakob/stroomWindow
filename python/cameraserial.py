@@ -33,6 +33,7 @@ class ImageProcessor(threading.Thread):
             if self.event.wait(1):
                 try:
                     self.stream.seek(0)
+                    now = time.time()
                     
                     # Read the image and do some processing on it
                     #Image.open(self.stream)
@@ -49,16 +50,16 @@ class ImageProcessor(threading.Thread):
                         x = ((i%3)+1)*8
                         y = (int(i/3)+1)*6
                         R,G,B = pixels[x, y]
-                        brightness += B+R+G
-                    if brightness/total < 200:
-                        if(!covered):
-                            ser.write(chr(0))
+                        brightness += B
+                    if brightness/total < 100:
+                        if not covered:
+                            ser.write(chr(1))
                             covered = True
                     else:
-                        if(covered):
+                        if covered:
                             covered = False
-                            ser.write(chr(1))
-                    #print B
+                            ser.write(chr(0))
+                    print brightness/total
 
                 finally:
                     # Reset the stream and event
