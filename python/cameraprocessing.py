@@ -52,16 +52,22 @@ class ImageProcessor(threading.Thread):
                     	# Read the image and do some processing on it
                     	#Image.open(self.stream)
 		    	image = Image.open(self.stream)
+		    	pixels = image.load()
 
 			#image = image.convert ('RGB')
 			#coordinates of the pixel
 			#Get RGB
-			pixelRGB = image.getpixel((0))
-			blue = 0
-			#for range (32*24):
-                        #        blue += 
+
+			#for x in range(32):
+                        #        for y in range(24):
+                        #                print pixels[x, y][2]
+                                        #pixels[x, y] = value
+                                        #pixelRGB = image.getpixel((x,y))
+                                        #blue += pixelRGB.B
+                                        #print value
+                        
 			#R,G,B = pixelRGB
-			print(pixelRGB)
+			#print(pixelRGB)
 			 
 		    	#image = image.astype(np.float, copy=False)
 		    	#image = image / 255.0
@@ -102,7 +108,7 @@ with picamera.PiCamera() as camera:
     pool = [ImageProcessor() for i in range(4)]
     camera.resolution = (32, 24)
     #camera.saturation = -100
-    camera.zoom = (0.495,0.495,0.1,0.1)
+    #camera.zoom = (0.495,0.495,0.1,0.1)
     camera.framerate = 15
     camera.raw_format = 'rgb'
     camera.start_preview()

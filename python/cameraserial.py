@@ -11,27 +11,8 @@ done = False
 lock = threading.Lock()
 pool = []
 
-# Create a keyboard listener
-import thread
-
-def getch():
-	import sys, tty, termios
-	fd = sys.stdin.fileno()
-	old_settings = termios.tcgetattr(fd)
-	try:
-		tty.setraw(sys.stdin.fileno())
-		ch = sys.stdin.read(1)
-	finally:
-		termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-	return ch
-
-def keypress():
-	global char
-	char = getch()
-
-thread.start_new_thread(keypress, ())
-
-char = None
+ser = serial.Serial('/dev/ttyACM0', 9600)
+time.sleep(2) #wait for arduino initialisation
 
 class ImageProcessor(threading.Thread):
     def __init__(self):
@@ -44,44 +25,35 @@ class ImageProcessor(threading.Thread):
     def run(self):
         # This method runs in a separate thread
         global done
+        global ser
         while not self.terminated:
             # Wait for an image to be written to the stream
             if self.event.wait(1):
                 try:
-                    	self.stream.seek(0)
-		    
-                    	# Read the image and do some processing on it
-                    	#Image.open(self.stream)
-		    	image = Image.open(self.stream)
-		    	pixels = image.load()
+                    self.stream.seek(0)
+                    
+                    # Read the image and do some processing on it
+                    #Image.open(self.stream)
+                    image = Image.open(self.stream)
+                    pixels = image.load()
 
-			#image = image.convert ('RGB')
-			#coordinates of the pixel
-			#Get RGB
+                    #image = image.convert ('RGB')
+                    #coordinates of the pixel
+                    #Get RGB
 
-			#for x in range(32):
-                        #        for y in range(24):
-                        #                print pixels[x, y][2]
-                                        #pixels[x, y] = value
-                                        #pixelRGB = image.getpixel((x,y))
-                                        #blue += pixelRGB.B
-                                        #print value
-                        
-			#R,G,B = pixelRGB
-			#print(pixelRGB)
-			 
-		    	#image = image.astype(np.float, copy=False)
-		    	#image = image / 255.0
-                    	#...
-                    	#...
-                    	# Set done to True if you want the script to terminate
-                    	# at some point
-		    	# done=True
-		    	if char is not None :
-				if(char == 'q'):
-					print "whoooa, exit with " + char
-					done=True
-				thread.start_new_thread(keypress, ())
+                    blue = 0
+                    total = 9
+                    for i in range(total):
+                        x = ((i%3)+1)*8
+                        y = (int(i/3)+1)*6
+                        R,G,B = pixels[x, y]
+                        blue += B
+                    if blue/total < 120:
+                        ser.write(chr(0))
+                    else:
+                        ser.write(chr(1))
+                    #print B
+
                 finally:
                     # Reset the stream and event
                     self.stream.seek(0)
