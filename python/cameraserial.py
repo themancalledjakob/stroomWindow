@@ -10,6 +10,7 @@ from PIL import Image
 done = False
 lock = threading.Lock()
 pool = []
+covered = False
 
 ser = serial.Serial('/dev/ttyACM0', 9600)
 time.sleep(2) #wait for arduino initialisation
@@ -26,6 +27,7 @@ class ImageProcessor(threading.Thread):
         # This method runs in a separate thread
         global done
         global ser
+        global covered
         while not self.terminated:
             # Wait for an image to be written to the stream
             if self.event.wait(1):
@@ -41,17 +43,21 @@ class ImageProcessor(threading.Thread):
                     #coordinates of the pixel
                     #Get RGB
 
-                    blue = 0
+                    brightness = 0
                     total = 9
                     for i in range(total):
                         x = ((i%3)+1)*8
                         y = (int(i/3)+1)*6
                         R,G,B = pixels[x, y]
-                        blue += B
-                    if blue/total < 120:
-                        ser.write(chr(0))
+                        brightness += B+R+G
+                    if brightness/total < 200:
+                        if(!covered):
+                            ser.write(chr(0))
+                            covered = True
                     else:
-                        ser.write(chr(1))
+                        if(covered):
+                            covered = False
+                            ser.write(chr(1))
                     #print B
 
                 finally:
