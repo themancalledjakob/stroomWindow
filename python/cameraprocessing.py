@@ -55,12 +55,14 @@ class ImageProcessor(threading.Thread):
 
 			#image = image.convert ('RGB')
 			#coordinates of the pixel
-			X,Y = 0,0
 			#Get RGB
-			pixelRGB = image.getpixel((X,Y))
-			R,G,B = pixelRGB
-			if R == 0:
-				print(R)
+			pixelRGB = image.getpixel((0))
+			blue = 0
+			#for range (32*24):
+                        #        blue += 
+			#R,G,B = pixelRGB
+			print(pixelRGB)
+			 
 		    	#image = image.astype(np.float, copy=False)
 		    	#image = image / 255.0
                     	#...
@@ -99,9 +101,11 @@ def streams():
 with picamera.PiCamera() as camera:
     pool = [ImageProcessor() for i in range(4)]
     camera.resolution = (32, 24)
-    camera.framerate = 2
+    #camera.saturation = -100
+    camera.zoom = (0.495,0.495,0.1,0.1)
+    camera.framerate = 15
     camera.raw_format = 'rgb'
-    #camera.start_preview()
+    camera.start_preview()
     time.sleep(2)
     camera.capture_sequence(streams(), use_video_port=True)
 
