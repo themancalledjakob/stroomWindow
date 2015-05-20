@@ -3,6 +3,7 @@ import time
 import threading
 import picamera
 import serial
+import random
 
 from PIL import Image
 
@@ -13,6 +14,7 @@ pool = []
 covered = False
 delay = 2.0
 lastTimer = 0
+animationOrder = [1,2,3,4,5,6]
 
 ser = serial.Serial('/dev/ttyACM0', 9600)
 time.sleep(2) #wait for arduino initialisation
@@ -32,6 +34,7 @@ class ImageProcessor(threading.Thread):
         global covered
         global delay
         global lastTimer
+        global animationOrder
         while not self.terminated:
             # Wait for an image to be written to the stream
             if self.event.wait(1):
@@ -60,7 +63,8 @@ class ImageProcessor(threading.Thread):
                             if not covered:
                                 lastTimer = now
                                 ser.write(chr(7)) # 7 is offswitch
-                                ser.write(chr(1)) # 0 is switch on
+                                ser.write(chr(1)) # 1 is switch on
+                                random.shuffle(animationOrder)
                                 covered = True
                         else:
                             if covered:
@@ -77,11 +81,11 @@ class ImageProcessor(threading.Thread):
                         #    print " -- "
                         #print brightness/total
                     else if covered:
-                        serv = round(now*10,0)%6
-                        for i in range(1,7):
-                            ser.write(chr(i))
-                            if serv == i
-                               ser.write(chr(1))
+                        serv = (round(now*10,0)%6) + 1
+                        for i in range(0,6):
+                            ser.write(chr(animationOrder[i]))
+                            if serv == animationOrder[i]
+                                ser.write(chr(1))
                             else
                                 ser.write(chr(0))
 
@@ -93,6 +97,9 @@ class ImageProcessor(threading.Thread):
                     # Return ourselves to the pool
                     with lock:
                         pool.append(self)
+
+def anim():
+
 
 def streams():
     while not done:
