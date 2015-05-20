@@ -23,8 +23,8 @@ void ofApp::setup(){
 	int baud = 9600;
 //	serial.setup(0, baud); //open the first device
 	//serial.setup("COM4", baud); // windows example
-	serial.setup("/dev/tty.usbmodem621", baud); // mac osx example
-	//serial.setup("/dev/ttyUSB0", baud); //linux example
+//	serial.setup("/dev/tty.usbmodem621", baud); // mac osx example
+  	serial.setup("/dev/ttyACM0", baud); //linux example
 	
 	readTime = "not";
 	memset(bytesReadString, 0, 12);
