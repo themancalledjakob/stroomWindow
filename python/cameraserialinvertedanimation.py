@@ -40,9 +40,8 @@ class ImageProcessor(threading.Thread):
             if self.event.wait(1):
                 try:
                     self.stream.seek(0)
+                    now = time.clock()
                     if now > lastTimer+delay: 
-                        now = time.clock()
-                        
                         # Read the image and do some processing on it
                         #Image.open(self.stream)
                         image = Image.open(self.stream)
@@ -62,32 +61,35 @@ class ImageProcessor(threading.Thread):
                         if brightness/total < 70:
                             if not covered:
                                 lastTimer = now
-                                ser.write(chr(7)) # 7 is offswitch
-                                ser.write(chr(1)) # 1 is switch on
+                                ser.write(chr(107)) # 7 is offswitch
+                                ser.write(chr(101)) # 1 is switch on
                                 random.shuffle(animationOrder)
                                 covered = True
                         else:
                             if covered:
                                 covered = False
-                                ser.write(chr(7)) # 7 is offswitch
-                                ser.write(chr(0)) # 0 is switch off
+                                ser.write(chr(107)) # 7 is offswitch
+                                ser.write(chr(100)) # 0 is switch off
                         print covered
                         #if now > lastTimer+delay:
-                        #    ser.write(chr(0))
+                        #    ser.write(chr(100))
                         #    lastTimer = now
                         #    print " -- "
                         #    print now
                         #    print (lastTimer+delay)
                         #    print " -- "
                         #print brightness/total
-                    else if covered:
-                        serv = (round(now*10,0)%6) + 1
+                    elif covered:
+                        serv = (round(now*12,0)%6) + 1
+                        serv2 = (round(now*12+0.5,0)%6) + 1
+                        #time.sleep(0.1) #wait for arduino
                         for i in range(0,6):
-                            ser.write(chr(animationOrder[i]))
-                            if serv == animationOrder[i]
-                                ser.write(chr(1))
-                            else
-                                ser.write(chr(0))
+                            ser.write(chr(100+animationOrder[i]))
+                            if serv == animationOrder[i] or serv2 == animationOrder[i]:
+                                ser.write(chr(101))
+                            else:
+                                ser.write(chr(100))
+                            time.sleep(0.1) #wait for arduino
 
                 finally:
                     # Reset the stream and event
@@ -97,8 +99,6 @@ class ImageProcessor(threading.Thread):
                     # Return ourselves to the pool
                     with lock:
                         pool.append(self)
-
-def anim():
 
 
 def streams():
