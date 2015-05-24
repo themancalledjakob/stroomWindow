@@ -1,1 +1,4 @@
+
+rpicam-pixels/bin/rpicam-pixels
+rpicam-pixels/bin/*log.json
 .DS_Store
