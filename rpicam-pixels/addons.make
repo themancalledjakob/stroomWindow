@@ -1,0 +1,3 @@
+ofxRPiCameraVideoGrabber
+ofxJSON
+ofxGPIO

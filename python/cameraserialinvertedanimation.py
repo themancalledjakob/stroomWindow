@@ -122,7 +122,7 @@ with picamera.PiCamera() as camera:
     #camera.zoom = (0.495,0.495,0.1,0.1)
     camera.framerate = 15
     camera.raw_format = 'rgb'
-    #camera.start_preview()
+    camera.start_preview()
     time.sleep(2)
     camera.capture_sequence(streams(), use_video_port=True)
 
