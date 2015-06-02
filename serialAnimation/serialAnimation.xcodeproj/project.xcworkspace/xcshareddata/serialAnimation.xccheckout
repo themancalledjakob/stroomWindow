@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DB6B4520-B3F7-4ADE-9B22-A6074F060D6A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>serialAnimation</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3616FDC8-F190-4830-8EFC-2ECDC2A6194B</key>
+		<string>https://github.com/themancalledjakob/stroomWindow.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>serialAnimation/serialAnimation.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3616FDC8-F190-4830-8EFC-2ECDC2A6194B</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/themancalledjakob/stroomWindow.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3616FDC8-F190-4830-8EFC-2ECDC2A6194B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3616FDC8-F190-4830-8EFC-2ECDC2A6194B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>stroomWindow</string>
+		</dict>
+	</array>
+</dict>
+</plist>

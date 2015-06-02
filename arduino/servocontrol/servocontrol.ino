@@ -42,33 +42,34 @@ void setup(){
 
 void loop(){
 
-	if(Serial.available()){
-	    int switcher = Serial.read();
+	if(Serial.available() >= 2){
+	    int switcher = ((int)Serial.read())-100;
+//	    		digitalWrite(13,LOW);
 	    switch (switcher) {
-	    	case 7:
-	    		digitalWrite(13,HIGH);
-	    		off = (int)Serial.read() == 0 ? true : false;
-	    		break;
 	    	case 1:
 	    	case 2:
 	    	case 3:
 	    	case 4:
 	    	case 5:
 	    	case 6:
-	    		active[switcher-1] = (int)Serial.read() == 0 ? true : false;
+	    		active[switcher-1] = ((int)Serial.read())-100 == 0 ? true : false;
 	    		break;
-	    	case 8:
-	    		interval[STATUS_DRIVE] += (int)Serial.read();
+	    	case 7:
+//	    		digitalWrite(13,HIGH);
+	    		off = ((int)Serial.read())-100 == 0 ? true : false;
 	    		break;
-	    	case 9:
-	    		interval[STATUS_DRIVE] -= (int)Serial.read();
-	    		break;
-	    	case 9:
-	    		interval[STATUS_STOP] += (int)Serial.read();
-	    		break;
-	    	case 10:
-	    		interval[STATUS_STOP] -= (int)Serial.read();
-	    		break;
+	    	// case 8:
+	    	// 	interval[STATUS_DRIVE] += ((int)Serial.read())-100;
+	    	// 	break;
+	    	// case 9:
+	    	// 	interval[STATUS_DRIVE] -= ((int)Serial.read())-100;
+	    	// 	break;
+	    	// case 9:
+	    	// 	interval[STATUS_STOP] += ((int)Serial.read())-100;
+	    	// 	break;
+	    	// case 10:
+	    	// 	interval[STATUS_STOP] -= ((int)Serial.read())-100;
+	    	// 	break;
 	    }
 	}
 

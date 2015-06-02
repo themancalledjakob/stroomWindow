@@ -7,9 +7,9 @@ Byte send = (Byte)0;
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofSetVerticalSync(true);
+    ofSetFrameRate(60);
 	
-	bSendSerialMessage = false;
-	ofBackground(255);	
+	ofBackground(0);
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
 	font.loadFont("DIN.otf", 11);
@@ -17,61 +17,56 @@ void ofApp::setup(){
 	serial.listDevices();
 	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 	
-	// this should be set to whatever com port your serial device is connected to.
-	// (ie, COM4 on a pc, /dev/tty.... on linux, /dev/tty... on a mac)
-	// arduino users check in arduino app....
 	int baud = 9600;
-//	serial.setup(0, baud); //open the first device
-	//serial.setup("COM4", baud); // windows example
-//	serial.setup("/dev/tty.usbmodem621", baud); // mac osx example
-  	serial.setup("/dev/tty.usbmodem621", baud); //linux example
+//  	serial.setup("/dev/tty.usbmodem621", baud); //linux example
+    
+    animation.setup();
 	
-	readTime = "not";
-	memset(bytesReadString, 0, 12);
 //    received = new vector<Byte>();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	
-	if (bSendSerialMessage){
-		        serial.writeByte((Byte)107);
-        serial.writeByte((Byte)send);		bSendSerialMessage = false;
-	}
-    
-    if(receivedBuffer.size() == 1){
-        received = receivedBuffer;
-        receivedBuffer.clear();
-        readTime = ofGetTimestampString();
-    }
-    
-    Byte recievedNow = serial.readByte();
-    if((int)recievedNow != 254){
-        receivedBuffer.push_back(recievedNow);
-        cout << ofToString((int)recievedNow) << " : " << ofToString(recievedNow) << endl;
-    }
-    
+//        serial.writeByte((Byte)107);
+//        serial.writeByte((Byte)send);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//	if (nBytesRead > 0 && ((ofGetElapsedTimef() - readTime) < 0.5f)){
-		ofSetColor(0);
-//	} else {
-//		ofSetColor(220);
-//	}
-//	string msg;
-//	msg += "click to test serial:\n";
-//    string receivedMsg;
-//    for(int i =0; i < received.size(); i++)
-//        receivedMsg += ofToString((int)received[i]) + " : ";
-//	msg += "read: " + receivedMsg + "\n";
-//	msg += "at: " + ofToString(readTime) + "\n";
-//	font.drawString(msg, 50, 100);
+    ofSetBackgroundAuto(false);
+    ofEnableAlphaBlending();
+    ofSetColor(0,0,0,20);
+    ofRect(0,0,ofGetWidth(),ofGetHeight());
+    animation.update();
+    for (int i = 0; i < 6; ++i){
+        ofPushMatrix();
+        if(animation.getTurning()[i]){
+            if(animation.getTurning()[i] != animation.getLastTurning()[i])
+                ofSetColor(255,255,255,255);
+            else
+                ofSetColor(255,0,0,20);
+            
+            ofTranslate(i*40+20,20);
+            ofRotate(ofGetFrameNum()%360);
+        } else {
+            if(animation.getTurning()[i] != animation.getLastTurning()[i])
+                ofSetColor(0,0,0,255);
+            else
+                ofSetColor(125,20);
+            ofTranslate(i*40+20,20);
+        }
+        ofRect(-10,-10,20,20);
+        ofPopMatrix();
+    }
+    animation.setLastTurning();
+    if(!animation.started)
+        animation.startAnimation(ofGetElapsedTimeMillis());
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed  (int key){ 
+void ofApp::keyPressed  (int key){
+    cout<< "pressed key" << endl;
+    animation.startAnimation(ofGetElapsedTimeMillis());
 	
 }
 
@@ -92,8 +87,6 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-	bSendSerialMessage = true;
-    send = send == 100 ? 101 : 100;
 }
 
 //--------------------------------------------------------------
