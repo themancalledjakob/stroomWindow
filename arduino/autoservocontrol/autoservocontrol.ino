@@ -42,12 +42,15 @@ void setup(){
 	digitalWrite(13,LOW);
 
 	onInterval = 60000000 * 15; // 15 minutes in microseconds
-	lastOn = 0;
 	onDuration = 40000000; // 40 seconds
+	lastOn = micros() - onInterval;
 }
 
 void loop(){
-	unsigned long now = micros(); 
+	unsigned long now = micros();
+	if( lastOn > now ){
+		lastOn = 0;
+	}
 	if( now > lastOn + onInterval ){
 		if(off){
 			off = false;
@@ -58,7 +61,7 @@ void loop(){
 		}
 	}
 	if (!off) {
-                float calc = (now*0.0000002);
+        float calc = (now*0.0000002);
 		int activeServo = (((int)calc)%AMOUNT_SERVOS);
 		int activeServo2 = (int)((int)(calc+0.5)%AMOUNT_SERVOS);
 //
