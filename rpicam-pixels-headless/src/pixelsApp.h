@@ -11,7 +11,6 @@
 class pixelsApp : public ofBaseApp, public KeyListener{
 
 	public:
-
 		void setup();
 		void update();
 		void keyPressed(int key);
@@ -43,7 +42,7 @@ class pixelsApp : public ofBaseApp, public KeyListener{
 	int maxB;
 	int minB;
 	
-	
 	GPIO* gpio32;
+	GPIO* gpio5;
 };
 
