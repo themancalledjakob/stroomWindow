@@ -22,9 +22,11 @@ boolean active[AMOUNT_SERVOS];
 
 int degree = 0;
 
-unsigned long onInterval;
+long onInterval;
+long onDuration;
 unsigned long lastOn;
-unsigned long onDuration;
+unsigned long now;
+long aroundTheCorner;
 
 void setup(){
   
@@ -41,23 +43,31 @@ void setup(){
 
 	digitalWrite(13,LOW);
 
-	onInterval = 60000000 * 15; // 15 minutes in microseconds
-	onDuration = 40000000; // 40 seconds
-	lastOn = micros() - onInterval;
+	onInterval = 60000000 * 5; // 15 minutes in microseconds
+	onDuration = 60000000; // 60 seconds
+	now = micros();
+	lastOn = now;
+	aroundTheCorner = onInterval;
+
 }
 
 void loop(){
-	unsigned long now = micros();
-	if( lastOn > now ){
+	unsigned long newNow = micros();
+	if ( now > newNow ){
 		lastOn = 0;
+        lastInterval = 0;
+		aroundTheCorner = now - lastOn;
 	}
-	if( now > lastOn + onInterval ){
+	now = newNow;
+
+	if( now + aroundTheCorner > lastOn + onInterval ){
 		if(off){
 			off = false;
 		}
-		if( now > lastOn + onInterval + onDuration ){
+		if( now + aroundTheCorner > lastOn + onInterval + onDuration ){
 			off = true;
 			lastOn = now;
+			aroundTheCorner = 0;
 		}
 	}
 	if (!off) {

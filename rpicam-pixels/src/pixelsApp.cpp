@@ -261,7 +261,7 @@ void pixelsApp::logCover()
 	ofxJSONElement log;
 	string time = ofGetTimestampString();
 	log["timeStamp"] = time;
-        if (!log.save( time + "_log.json", true))
+        if (!log.save( "logs/" + time + "_log.json", true))
         {
             ofLogNotice("pixelsApp::logCover") << "log.json written unsuccessfully.";
         }
@@ -272,13 +272,13 @@ void pixelsApp::logCover()
 	
 	coverCounter++;
 	
-        if (!result.save( "settings.json", true))
-        {
-            ofLogNotice("pixelsApp::logCover") << "settings.json written unsuccessfully.";
-        }
-        else
-        {
-            ofLogNotice("pixelsApp::logCover") << "settings.json written successfully.";
-        }
+        // if (!result.save( "settings.json", true))
+        // {
+        //     ofLogNotice("pixelsApp::logCover") << "settings.json written unsuccessfully.";
+        // }
+        // else
+        // {
+        //     ofLogNotice("pixelsApp::logCover") << "settings.json written successfully.";
+        // }
 }
 
