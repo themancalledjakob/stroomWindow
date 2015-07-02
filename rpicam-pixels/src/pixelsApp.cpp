@@ -44,7 +44,7 @@ void pixelsApp::setup()
 	thresholdDiversity = -1; // overriden by load
 	
 	loadSettings();
-	
+
 	maxB = -512;
 	minB = 512;
 	
@@ -76,20 +76,21 @@ void pixelsApp::update()
 	
 	unsigned long long now = ofGetElapsedTimeMillis();
 	
-	if ( now > lastCover + coverDuration ){
+	if ( now > lastCover + coverDuration || coverCounter == 0 ){
 		if(doReloadPixels && ofGetFrameNum() > 20)
 		{
 			if(!GPIOset){
 				gpio32  = new GPIO("32");
 				gpio32->export_gpio();
     				gpio32->setdir_gpio("out");
+				gpio32 ->setval_gpio("1");
 				GPIOset = true;
 			}
-			if( closeInteraction && GPIOset){
+			if( (closeInteraction && GPIOset) ){
 				closeInteraction = false;
 				//videoGrabber.setLEDState(true);
 				gpio32 ->setval_gpio("1");
-				cout << "alright, enough of this. sending serialignal to turn the shit off" << endl;
+				cout << "alright, sending serial signal to turn the servos off" << endl;
 		       		serial.writeByte((char)107);
 		       		serial.writeByte((char)100);
 			}
@@ -144,7 +145,7 @@ void pixelsApp::update()
 			if(GPIOset){
 	    			gpio32 ->setval_gpio("0");
 			}
-			cout << "yeah, that's what i'm talking about. turning the shit on with a serialignal of course." << endl;
+			cout << "yeah, turning the servos on via serial." << endl;
        			serial.writeByte((char)107);
        			serial.writeByte((char)101);
 		}
@@ -176,6 +177,7 @@ void pixelsApp::draw(){
 	info << "closeInteraction: " << closeInteraction << "\n";
 	info << "globalDiversity: " << globalDiversity << "\n";
 	info << "globalAverage: " << globalAverage << "\n";
+	info << "coverCounter: " << coverCounter << "\n";
 	info << "maxB: " << maxB << "\n";
 	info << "minB: " << minB << "\n";
 	//info <<	filterCollection.filterList << "\n";
