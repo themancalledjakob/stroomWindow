@@ -44,6 +44,7 @@ class pixelsApp : public ofBaseApp, public KeyListener{
 	int maxB;
 	int minB;
 	
+	ofSerial	serial;
 	
 	GPIO* gpio32;
 };

@@ -49,10 +49,16 @@ void pixelsApp::setup()
 	maxB = -512;
 	minB = 512;
 	
+
+	serial.listDevices();
+	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
+	
+	int baud = 9600;
+ 	serial.setup("/dev/tty.usbmodem621", baud); //linux example
 	
 	gpio32  = new GPIO("32");
 	gpio32->export_gpio();
-        gpio32->setdir_gpio("out");
+    gpio32->setdir_gpio("out");
 }	
 
 //--------------------------------------------------------------
@@ -72,6 +78,9 @@ void pixelsApp::update()
 				closeInteraction = false;
 				//videoGrabber.setLEDState(true);
 				gpio32 ->setval_gpio("1");
+
+		       serial.writeByte((Byte)107);
+		       serial.writeByte((Byte)100);
 			}
 			int _maxB = -512;
 			int _minB = 512;
@@ -120,7 +129,10 @@ void pixelsApp::update()
 	} else {
 		closeInteraction = true;
 		//videoGrabber.setLEDState(false);
-	        gpio32 ->setval_gpio("0");
+	    gpio32 ->setval_gpio("0");
+
+       serial.writeByte((Byte)107);
+       serial.writeByte((Byte)101);
 	}
 
 }
