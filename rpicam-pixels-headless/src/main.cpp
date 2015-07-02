@@ -1,9 +1,8 @@
 #include "ofMain.h"
 
-Â#include "ofGLProgrammableRenderer.h"
+#include "ofGLProgrammableRenderer.h"
 
 #include "pixelsApp.h"
-
 
 #include "ofAppNoWindow.h"
 int main()

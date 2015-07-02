@@ -21,7 +21,7 @@ void pixelsApp::setup()
 	omxCameraSettings.framerate = 30;
 	omxCameraSettings.isUsingTexture = true;
 	
-	filterCollection.setup();
+	//filterCollection.setup();
 
 	doPixels = true;
 	doReloadPixels = true;
@@ -127,7 +127,7 @@ void pixelsApp::update()
 
 
 //--------------------------------------------------------------
-//void pixelsApp::draw(){
+void pixelsApp::draw(){
 	
 //	videoGrabber.draw();
 	/*
@@ -166,7 +166,7 @@ void pixelsApp::update()
 //	}
 	
 	//
-//}
+}
 
 //--------------------------------------------------------------
 void pixelsApp::keyPressed  (int key)
@@ -175,7 +175,7 @@ void pixelsApp::keyPressed  (int key)
 	
 	if (key == 'e')
 	{
-		videoGrabber.applyImageFilter(filterCollection.getNextFilter());
+		//videoGrabber.applyImageFilter(filterCollection.getNextFilter());
 	}
 	if (key == 'g')
 	{
@@ -281,4 +281,3 @@ void pixelsApp::logCover()
             ofLogNotice("pixelsApp::logCover") << "settings.json written successfully.";
         }
 }
-
