@@ -154,11 +154,7 @@ void pixelsApp::draw(){
 	//info <<	filterCollection.filterList << "\n";
 	
 	info << "\n";
-	info << "Press e to Increment filter" << "\n";
-	info << "Press p to Toggle pixel processing" << "\n";
-	info << "Press r to Toggle pixel reloading" << "\n";
-	info << "Press g to Toggle info" << "\n";
-	
+	info << "office of hard work says: everything should be fine" << "\n";
 	
 	if (doDrawInfo) 
 	{
